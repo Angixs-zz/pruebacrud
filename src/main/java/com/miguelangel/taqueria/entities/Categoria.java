@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "categorias")
@@ -22,6 +23,10 @@ public class Categoria {
     private Integer id;
 
     @NotBlank(message = "El nombre de la categoria es obligatorio")
+    @Pattern(
+        regexp = "^(?=.*[A-Za-zÁÉÍÓÚáéíóúÑñ])[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\\s]+$",
+        message = "El nombre de la categoría debe contener letras y no usar caracteres especiales"
+    )
     private String nombre;
 
     @OneToMany(

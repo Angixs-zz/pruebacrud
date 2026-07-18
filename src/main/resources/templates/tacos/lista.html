@@ -14,6 +14,18 @@
 
     <h2 class="mb-4">Lista de tacos</h2>
 
+    <div
+        th:if="${mensajeExito}"
+        class="alert alert-success"
+        th:text="${mensajeExito}">
+    </div>
+
+    <div
+        th:if="${mensajeError}"
+        class="alert alert-danger"
+        th:text="${mensajeError}">
+    </div>
+
     <div class="mb-3">
         <a th:href="@{/tacos/nuevo}" class="btn btn-primary">
             Nuevo taco

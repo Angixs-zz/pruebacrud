@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/tacos")
@@ -70,11 +71,19 @@ public class TacoController {
     @GetMapping("/editar/{id}")
     public String editar(
             @PathVariable Integer id,
-            Model model) {
+            Model model,
+            RedirectAttributes atributos) {
 
-        Taco taco = tacoService
-                .buscarPorId(id)
-                .orElse(null);
+        Taco taco = tacoService.buscarPorId(id).orElse(null);
+
+        if (taco == null) {
+            atributos.addFlashAttribute(
+                    "mensajeError",
+                    "El taco solicitado no existe"
+            );
+
+            return "redirect:/tacos";
+        }
 
         model.addAttribute("taco", taco);
         model.addAttribute(
@@ -86,8 +95,24 @@ public class TacoController {
     }
 
     @GetMapping("/eliminar/{id}")
-    public String eliminar(@PathVariable Integer id) {
-        tacoService.eliminar(id);
+    public String eliminar(
+            @PathVariable Integer id,
+            RedirectAttributes atributos) {
+
+        boolean eliminado = tacoService.eliminar(id);
+
+        if (eliminado) {
+            atributos.addFlashAttribute(
+                    "mensajeExito",
+                    "El taco se elimino correctamente"
+            );
+        } else {
+            atributos.addFlashAttribute(
+                    "mensajeError",
+                    "El taco solicitado no existe"
+            );
+        }
+
         return "redirect:/tacos";
     }
 }

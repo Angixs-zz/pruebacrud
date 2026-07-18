@@ -33,8 +33,15 @@
                 th:field="*{nombre}"
                 class="form-control"
                 placeholder="Ejemplo: Tradicionales"
+                pattern="(?=.*[A-Za-zÁÉÍÓÚáéíóúÑñ])[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]+"
+                title="El nombre de la categoría debe contener letras"
                 required
             >
+            <div
+                class="text-danger mt-1"
+                th:if="${#fields.hasErrors('nombre')}"
+                th:errors="*{nombre}">
+            </div>
         </div>
 
         <button type="submit" class="btn btn-success">

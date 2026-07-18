@@ -11,6 +11,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.miguelangel.taqueria.entities.Categoria;
 import com.miguelangel.taqueria.services.CategoriaService;
 
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
+import jakarta.validation.Valid;
+
 @Controller
 @RequestMapping("/categorias")
 public class CategoriaController {
@@ -34,17 +39,36 @@ public class CategoriaController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(Categoria categoria) {
+    public String guardar(
+            @Valid @ModelAttribute("categoria") Categoria categoria,
+            BindingResult resultado) {
+
+        if (resultado.hasErrors()) {
+            return "categorias/formulario";
+        }
+
         categoriaService.guardar(categoria);
         return "redirect:/categorias";
     }
 
     @GetMapping("/editar/{id}")
-    public String editar(@PathVariable Integer id, Model model) {
+    public String editar(
+            @PathVariable Integer id,
+            Model model,
+            RedirectAttributes atributos) {
 
         Categoria categoria = categoriaService
                 .buscarPorId(id)
                 .orElse(null);
+
+        if (categoria == null) {
+            atributos.addFlashAttribute(
+                    "mensajeError",
+                    "La categoria solicitada no existe"
+            );
+
+            return "redirect:/categorias";
+        }
 
         model.addAttribute("categoria", categoria);
 

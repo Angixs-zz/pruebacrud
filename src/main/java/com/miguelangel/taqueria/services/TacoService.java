@@ -29,7 +29,13 @@ public class TacoService {
         return tacoRepository.save(taco);
     }
 
-    public void eliminar(Integer id) {
+    public boolean eliminar(Integer id) {
+
+        if (!tacoRepository.existsById(id)) {
+            return false;
+        }
+
         tacoRepository.deleteById(id);
+        return true;
     }
 }
