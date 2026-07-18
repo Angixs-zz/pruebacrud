@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 @Entity
@@ -22,6 +23,10 @@ public class Taco {
     private Integer id;
 
     @NotBlank(message = "El nombre es obligatorio")
+    @Pattern(
+        regexp = "^(?=.*[A-Za-zÁÉÍÓÚáéíóúÑñ])[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\\s]+$",
+        message = "El nombre debe contener letras y no usar caracteres especiales"
+    )
     private String nombre;
 
     @NotNull(message = "El precio es obligatorio")

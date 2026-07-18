@@ -14,6 +14,20 @@
 
     <h2 class="mb-4">Lista de categorías</h2>
 
+    <div
+        th:if="${mensajeExito}"
+        class="alert alert-success"
+        th:text="${mensajeExito}"
+    >
+    </div>
+
+    <div
+        th:if="${mensajeError}"
+        class="alert alert-danger"
+        th:text="${mensajeError}"
+    >
+    </div>
+
     <div class="mb-3">
         <a th:href="@{/categorias/nueva}" class="btn btn-primary">
             Nueva categoría

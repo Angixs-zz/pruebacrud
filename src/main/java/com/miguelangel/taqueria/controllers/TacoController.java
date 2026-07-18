@@ -11,6 +11,11 @@ import com.miguelangel.taqueria.entities.Taco;
 import com.miguelangel.taqueria.services.CategoriaService;
 import com.miguelangel.taqueria.services.TacoService;
 
+import jakarta.validation.Valid;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 @Controller
 @RequestMapping("/tacos")
 public class TacoController {
@@ -44,7 +49,20 @@ public class TacoController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(Taco taco) {
+    public String guardar(
+            @Valid @ModelAttribute("taco") Taco taco,
+            BindingResult resultado,
+            Model model) {
+
+        if (resultado.hasErrors()) {
+            model.addAttribute(
+                    "categorias",
+                    categoriaService.listarTodas()
+            );
+
+            return "tacos/formulario";
+        }
+
         tacoService.guardar(taco);
         return "redirect:/tacos";
     }
