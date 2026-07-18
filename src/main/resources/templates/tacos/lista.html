@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Lista de tacos</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="container mt-4">
+
+    <h2 class="mb-4">Lista de tacos</h2>
+
+    <div class="mb-3">
+        <a th:href="@{/tacos/nuevo}" class="btn btn-primary">
+            Nuevo taco
+        </a>
+
+        <a th:href="@{/categorias}" class="btn btn-secondary">
+            Ver categorías
+        </a>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="taco : ${tacos}">
+                <td th:text="${taco.id}"></td>
+                <td th:text="${taco.nombre}"></td>
+                <td th:text="|$${taco.precio}|"></td>
+                <td th:text="${taco.descripcion}"></td>
+                <td th:text="${taco.categoria.nombre}"></td>
+
+                <td>
+                    <a th:href="@{/tacos/editar/{id}(id=${taco.id})}" class="btn btn-warning btn-sm">
+                        Editar
+                    </a>
+
+                    <a th:href="@{/tacos/eliminar/{id}(id=${taco.id})}" class="btn btn-danger btn-sm"
+                        onclick="return confirm('¿Seguro que deseas eliminar este taco?')">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+
+            <tr th:if="${#lists.isEmpty(tacos)}">
+                <td colspan="6" class="text-center">
+                    No hay tacos registrados
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+
+</html>
